@@ -181,7 +181,8 @@ Validar o backend com testes do Django e, quando útil, Django Admin. O Admin n�
 
 ### Versionamento
 
-- Usar a branch principal `main` e commits pequenos por entrega; branches curtas quando uma mudança justificar isolamento, sem Git Flow complexo.
+- Nunca desenvolver ou fazer commits diretamente na `main`. Antes de qualquer alteração, criar ou selecionar uma branch de trabalho adequada. Cada nova funcionalidade terá sua própria branch `feat/<nome>`; usar `fix/<nome>` para correções e `docs/<nome>` para documentação. Essa regra também vale para infraestrutura (`chore/<nome>`).
+- Fazer commits pequenos por entrega dentro da branch correspondente. Não integrar alterações na `main` automaticamente; a integração será tratada separadamente quando solicitada pelo proprietário. O primeiro commit de documentação foi criado antes desta regra; preservar seu histórico.
 - Versionar código, testes, migrações, dependências, documentação e configuração de infraestrutura sem segredos.
 - Não versionar senhas, `.env`, ambiente virtual, banco, backups ou arquivos gerados. Manter `.env.example` apenas com exemplos seguros.
 - Criar o primeiro commit com a documentação e `.gitignore`. Usar a identidade Git já configurada; se estiver ausente, solicitar nome e e-mail ao proprietário, sem inventá-los.
