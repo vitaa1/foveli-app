@@ -1,0 +1,30 @@
+# Segredos e configuracao local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python e ambientes locais
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Dados e arquivos gerados
+*.sqlite3
+*.sqlite3-journal
+*.log
+media/
+staticfiles/
+backups/
+*.dump
+
+# Editor e sistema operacional
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
