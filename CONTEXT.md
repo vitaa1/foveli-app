@@ -46,7 +46,28 @@ Valor que ainda precisa ser repassado à Foveli, descontados os recebimentos con
 Saída de dinheiro registrada com descrição, categoria, valor e data.
 
 **Comissão do vendedor**:
-Remuneração paga pela Foveli ao vendedor separadamente, depois do repasse integral das vendas. Não é desconto no preço do produto nem abatimento do valor a repassar.
+Remuneração paga pela Foveli ao vendedor separadamente, após um repasse que pode ser parcial. Não é desconto no preço do produto nem abatimento do valor a repassar.
+
+**Preço vigente**:
+Preço definido pelo proprietário e válido na data efetiva da venda, mesmo que ela seja registrada posteriormente.
+
+**Cancelamento por erro**:
+Correção de um lançamento incorreto, preservando o registro original e o motivo. Não comprova uma devolução física ou um reembolso.
+
+**Devolução de cliente**:
+Retorno real, total ou parcial, de produtos vendidos. Somente produtos em condição de venda voltam ao estoque disponível.
+
+**Conferência de estoque**:
+Contagem física dos produtos em um local, com registro de eventual ajuste da quantidade conhecida.
+
+**Crédito do vendedor**:
+Valor efetivamente repassado à Foveli além da obrigação do vendedor, disponível para devolução ou compensação em outro acerto. É separado da comissão.
+
+**Reembolso ao cliente**:
+Dinheiro devolvido pela Foveli ao cliente em relação a uma venda. Não elimina o dever do vendedor de repassar o dinheiro original que ainda retém.
+
+**Data de reconhecimento da revenda**:
+Data do acerto em que a revenda informa suas vendas, sem presumir em quais dias elas ocorreram.
 
 **Saldo do período**:
-Recebimentos menos despesas do período consultado. Não representa, por si só, lucro nem saldo bancário.
+Recebimentos menos saídas efetivas do período consultado, incluindo despesas, reembolsos e devoluções de crédito. Não representa, por si só, lucro nem saldo bancário.

@@ -35,6 +35,8 @@ docker compose exec web python manage.py createsuperuser
 
 ## Verificação
 
+Testes automatizados são obrigatórios em cada incremento de desenvolvimento. Funcionalidades novas incluem testes dos comportamentos esperados e dos erros relevantes; correções incluem testes de regressão. Verificações manuais não substituem a suíte. As regras completas estão em [Testes automatizados obrigatórios](docs/MVP.md#testes-automatizados-obrigatórios).
+
 ```powershell
 docker compose run --rm web python manage.py check
 docker compose run --rm web python manage.py makemigrations --check --dry-run
