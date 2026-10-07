@@ -150,7 +150,7 @@ Fontes oficiais:
 - https://render.com/docs/web-services
 - https://render.com/docs/free
 
-O banco gratuito Render expira em 30 dias e o serviço gratuito pode suspender por inatividade; portanto, não são a base proposta para operação real. Sem Docker, Redis, filas, API pública ou frontend separado.
+O banco gratuito Render expira em 30 dias e o serviço gratuito pode suspender por inatividade; portanto, não são a base proposta para operação real. Por decisão posterior do proprietário, usar Docker e Docker Compose no desenvolvimento: Django e PostgreSQL em containers. No Render, usar o Dockerfile da aplicação e PostgreSQL gerenciado separado. Sem Redis, filas, API pública ou frontend separado.
 
 ## 6. Ordem de implementação e verificação
 
@@ -159,7 +159,7 @@ Decisão do proprietário: começar pela infraestrutura necessária e pelo backe
 | Incremento | Entrega | Critério para avançar |
 | --- | --- | --- |
 | 0 — Versionamento | Repositório Git local, exclusões de segredos e arquivos gerados, documentação inicial. | Primeiro commit revisado; nenhum segredo ou dado real versionado. |
-| 1 — Base técnica | Ambiente Python isolado, dependências fixadas, projeto Django, configuração por ambiente, PostgreSQL de desenvolvimento e exemplo de configuração sem segredos. Definir User antes da primeira migração; criar apps conforme forem necessários. | Instalação reproduzível, conexão com banco, migrações e verificações do Django funcionando. |
+| 1 — Base técnica | Dockerfile, Docker Compose com Django e PostgreSQL, dependências fixadas, configuração por ambiente e exemplo sem segredos. Definir User antes da primeira migração; criar apps conforme forem necessários. | Instalação reproduzível, conexão com banco, migrações e verificações do Django funcionando. |
 | 2 — Acessos | Usuário administrador/vendedor, autenticação e regras de acesso no servidor. | Testes de usuário inativo, acesso indevido e isolamento entre vendedores. |
 | 3 — Produtos e estoque | Cadastro, saldos, entradas, entregas, devoluções, perdas, ajustes e histórico. | Testes de saldos e histórico, reversão integral em falha e concorrência em PostgreSQL, sem estoque negativo. |
 | 4 — Vendas | Vendas dos vendedores e do proprietário; preços controlados pela Foveli e preservados no histórico. | Testes da baixa no local correto, proibição de alteração de preço pelo vendedor, destino do recebimento e proteção contra duplicidade. |
@@ -186,9 +186,9 @@ Validar o backend com testes do Django e, quando útil, Django Admin. O Admin n�
 - Versionar código, testes, migrações, dependências, documentação e configuração de infraestrutura sem segredos.
 - Não versionar senhas, `.env`, ambiente virtual, banco, backups ou arquivos gerados. Manter `.env.example` apenas com exemplos seguros.
 - Criar o primeiro commit com a documentação e `.gitignore`. Usar a identidade Git já configurada; se estiver ausente, solicitar nome e e-mail ao proprietário, sem inventá-los.
-- Git local mantém o histórico. Um repositório remoto será necessário para cópia externa e publicação; provedor, endereço e visibilidade ainda não definidos. Não criar ou enviar a repositório público por suposição.
+- Git local mantém o histórico; remoto já conectado em https://github.com/vitaa1/foveli-app. Preservar a visibilidade configurada pelo proprietário.
 - Registrar no README os passos reproduzíveis de instalação, migração e testes quando a base técnica existir.
 
 Exemplo de aceite: produzir 100 → entregar 20 ao pai → saldos 80/20 → vender 15 a R$ 8 (R$ 80 via Pix recebido por ele e R$ 40 em dinheiro) → saldos 80/5 e R$ 120 vendidos e a repassar → confirmar repasse de R$ 100 → R$ 20 pendentes e R$ 100 de entrada. O total produzido precisa ser explicável por estoque, vendas e perdas. Uma venda própria do proprietário de 2 unidades no cartão a R$ 8 deixa estoque Foveli em 78 e R$ 16 a conferir, sem dívida do pai; só entra no financeiro após confirmação do recebimento.
 
-Cada etapa deve funcionar e passar pelas verificações relevantes antes da próxima. Ainda não há aplicação executável nem testes executados: esta entrega é a proposta prévia solicitada.
+Cada etapa deve funcionar e passar pelas verificações relevantes antes da próxima. O incremento de infraestrutura está implementado na branch `chore/docker-setup`; instruções de execução e escopo entregue estão no README. As regras de acesso do negócio e funcionalidades comerciais ficam para os próximos incrementos.
