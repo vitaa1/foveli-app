@@ -8,6 +8,8 @@ Primeiro incremento: Django 5.2 LTS, Python 3.13, PostgreSQL 17 e Docker Compose
 
 Validação inicial: imagem construída, migrações aplicadas, cinco testes aprovados em PostgreSQL, nenhuma migração pendente e verificação de produção do Django sem avisos. Gunicorn, conexão com banco e CSS do Admin também verificados na imagem sem montagem do código local. Não houve publicação no Render.
 
+Revisão de infraestrutura em 07/10/2026: suíte ampliada para 16 testes, incluindo configuração de produção, banco por URL/SSL, desativação de sessão, CSRF e regressões HTTP/1 do Gunicorn. Exclusões Docker verificadas com 14 arquivos fictícios em contexto isolado. Migrações em banco vazio, persistência após reinício e imagem de produção também verificadas; os relatórios dos revisores ficam em `docs/reviews/results/`.
+
 ## Iniciar no Windows
 
 Instale e inicie o Docker Desktop com containers Linux. Não é necessário instalar Python ou PostgreSQL no computador.
@@ -45,6 +47,14 @@ docker compose run --rm web python manage.py test
 
 Os testes usam um banco PostgreSQL separado, criado e removido pelo Django. Execute somente com a configuração local/de testes, nunca com credenciais de produção.
 
+Ao alterar Dockerfile ou `.dockerignore`, execute também no PowerShell, com o Docker ligado:
+
+```powershell
+.\scripts\Test-DockerContext.ps1
+```
+
+O teste usa um contexto temporário com arquivos fictícios, aplica o `.dockerignore` real e verifica o resultado de `COPY`. Não lê chaves, backups ou `.env` locais. O contexto temporário é removido ao final.
+
 ## Uso diário
 
 ```powershell
@@ -56,6 +66,8 @@ docker compose down
 `down` preserva o volume. Não use `down -v` para parar: essa opção apaga os dados do volume. Alterações no código são recarregadas pelo servidor local; após mudar dependências ou Dockerfile, reconstrua com `docker compose up -d --build`.
 
 As dependências diretas ficam em `requirements.in`; todas as versões resolvidas estão fixadas em `requirements.txt`. Após atualizar versões diretas, regenere o arquivo em container Python limpo e teste antes do commit:
+
+Exceção documentada: Gunicorn 26.2.2 é instalado do arquivo oficial do commit `8d98faa9a13d3399a7bea81b5169e5cd72225395`, com SHA-256 fixado na URL. Em 07/10/2026, as tags corrigidas existiam no GitHub, mas o índice PyPI consultado ainda oferecia apenas 26.2.0. A atualização incorpora os limites de parsing HTTP/1 da [release 26.2.1](https://github.com/benoitc/gunicorn/releases/tag/26.2.1). Não trocar essa referência por uma branch móvel nem remover o hash ao atualizar o lock. Quando a versão corrigida estiver disponível no índice, a migração para o pacote publicado deve preservar os testes de regressão.
 
 ```powershell
 docker run --rm --mount "type=bind,source=$($PWD.Path),target=/app" -w /app python:3.13-slim-bookworm sh -c "pip install -r requirements.in && pip freeze > requirements.txt"

@@ -4,6 +4,8 @@
 !.env.example
 *.pem
 *.key
+.aws/
+.codex/
 
 # Python e ambientes locais
 __pycache__/

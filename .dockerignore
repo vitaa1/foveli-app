@@ -10,3 +10,20 @@ __pycache__
 backups
 media
 staticfiles
+# Segredos e backups tambem precisam ficar fora do contexto Docker.
+**/*.pem
+**/*.key
+**/*.dump
+**/*.sqlite3-journal
+**/.env
+**/.env.*
+**/.aws
+**/.codex
+**/.agents
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.coverage
+**/htmlcov
+.idea
+.vscode
