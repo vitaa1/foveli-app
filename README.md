@@ -87,6 +87,8 @@ Na etapa de publicação: configurar segredos próprios, hosts, HTTPS/proxy e ba
 
 Nunca desenvolver diretamente em `main`. Cada incremento começa em uma branch `feat/`, `fix/`, `chore/` ou `docs/`; testar, revisar e documentar antes do commit. Não integrar na `main` sem solicitação do proprietário.
 
+Após implementar e testar cada feature, executar em paralelo os agentes [code-reviewer](docs/reviews/code-reviewer.md) e [security-guard](docs/reviews/security-guard.md). Corrigir os achados e revalidar antes de propor merge. As duas revisões devem identificar o commit avaliado e suas limitações. O procedimento também se aplica a correções e infraestrutura; regras completas em [AGENTS.md](AGENTS.md). Essa política ainda não é um bloqueio automático configurado no GitHub.
+
 Remoto: https://github.com/vitaa1/foveli-app
 
 Regras e próximos incrementos: [plano do MVP](docs/MVP.md). Vocabulário: [CONTEXT.md](CONTEXT.md).

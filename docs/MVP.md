@@ -208,7 +208,17 @@ Validar o backend com testes do Django e, quando útil, Django Admin. O Admin n�
 2. Implementar modelos, migrações e regras junto com testes automatizados dos comportamentos introduzidos ou alterados.
 3. Executar os testes no PostgreSQL e verificações do Django; corrigir falhas antes de concluir a entrega.
 4. Revisar as alterações e atualizar a documentação de execução e decisões.
-5. Criar um commit descritivo com o incremento funcionando antes de avançar.
+5. Criar um commit descritivo e submeter essa versão estável aos agentes `code-reviewer` e `security-guard`, em paralelo, antes de propor integração na `main`.
+6. Corrigir achados confirmados, adicionar testes de regressão e repetir testes/revisões da versão final. Registrar resultados e limitações com base e commit revisados.
+7. Somente com testes aprovados e as duas revisões concluídas sem achados bloqueantes, apresentar a entrega para eventual autorização do proprietário de merge. Não integrar automaticamente na `main`.
+
+### Revisão independente obrigatória
+
+O `code-reviewer` verifica lógica, regras de negócio, regressões, migrações, manutenção e cobertura útil dos testes. O `security-guard` verifica vulnerabilidades, permissões, isolamento dos dados, segredos, configurações e abuso dos fluxos de estoque/financeiro. Ambos trabalham sobre o mesmo diff/commit; não corrigem o código durante a inspeção.
+
+Defeitos e vulnerabilidades confirmados devem ser resolvidos antes de solicitar merge; sugestões opcionais não bloqueiam. Toda mudança posterior de código, configuração ou testes exige revalidação. Revisão indisponível/incompleta é pendência, não aprovação. Guardar a evidência no PR ou em `docs/reviews/results/`.
+
+Instruções executáveis pelos agentes em `AGENTS.md`; roteiros em `docs/reviews/code-reviewer.md` e `docs/reviews/security-guard.md`. A regra vale para features, correções e infraestrutura. Não existe ainda execução desses agentes no GitHub nem proteção técnica da branch; esta atualização configura o fluxo de trabalho do projeto, sem prometer bloqueio automático no servidor.
 
 ### Testes automatizados obrigatórios
 
