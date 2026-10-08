@@ -97,6 +97,8 @@ Na etapa de publicação: configurar segredos próprios, hosts, HTTPS/proxy e ba
 
 ## Git e desenvolvimento
 
+O [CI do GitHub Actions](.github/workflows/ci.yml) executa toda a suíte automatizada em PRs e pushes, usando Docker e PostgreSQL, e também valida imagem, migrações e configuração. Consulte [CI/CD](docs/CI-CD.md) para acompanhar os checks e entender a publicação planejada no Render após CI e merge autorizados. CD e proteção técnica da `main` ainda não estão configurados.
+
 Nunca desenvolver diretamente em `main`. Cada incremento começa em uma branch `feat/`, `fix/`, `chore/` ou `docs/`; testar, revisar e documentar antes do commit. Não integrar na `main` sem solicitação do proprietário.
 
 Após implementar e testar cada feature, executar em paralelo os agentes [code-reviewer](docs/reviews/code-reviewer.md) e [security-guard](docs/reviews/security-guard.md). Corrigir os achados e revalidar antes de propor merge. As duas revisões devem identificar o commit avaliado e suas limitações. O procedimento também se aplica a correções e infraestrutura; regras completas em [AGENTS.md](AGENTS.md). Essa política ainda não é um bloqueio automático configurado no GitHub.

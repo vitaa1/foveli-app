@@ -7,6 +7,7 @@
 - Antes de concluir um incremento, executar `docker compose run --rm web python manage.py test`, `docker compose run --rm web python manage.py check` e `docker compose run --rm web python manage.py makemigrations --check --dry-run`. Corrigir falhas e relatar honestamente o que foi executado ou ficou bloqueado.
 - Mudanças apenas documentais exigem revisão de consistência e `git diff --check`, sem testes artificiais do texto. Testes existentes não comprovam funcionalidades futuras apenas descritas no plano.
 - Manter segredos, `.env`, banco, backups e arquivos gerados fora do Git. Priorizar Django nativo, poucos apps e Docker Compose; não adicionar tecnologias sem necessidade atual.
+- Manter `.github/workflows/ci.yml` executando toda a suíte em PRs e pushes. Não pular testes, enfraquecer checks ou usar `continue-on-error` para fazer o CI passar. Conferir o resultado remoto do commit antes de propor merge; CI não substitui os revisores. Ver `docs/CI-CD.md`.
 
 ## Revisores obrigatórios antes do merge
 

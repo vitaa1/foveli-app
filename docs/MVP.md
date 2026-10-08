@@ -229,7 +229,7 @@ Instruções executáveis pelos agentes em `AGENTS.md`; roteiros em `docs/review
 - Antes de concluir cada incremento, executar a suíte completa enquanto seu tamanho permitir, `check` e `makemigrations --check --dry-run`. Mudanças de infraestrutura também exigem construção/inicialização e verificações automatizadas pertinentes.
 - Testes manuais e uso do Admin complementam, mas não substituem os automatizados. Não concluir uma funcionalidade com falhas conhecidas ou declarar validação que não foi executada; registrar qualquer bloqueio.
 - Alterações exclusivamente documentais devem passar por revisão de consistência e verificação de diff; não criar testes artificiais de texto. Se rodar a suíte existente, informar que isso não valida regras futuras ainda não implementadas.
-- Automatizar a execução no GitHub em um incremento próprio de integração contínua. Até lá, a execução local obrigatória precede a conclusão de cada entrega; não afirmar que existe bloqueio automático de integração no remoto.
+- Executar a suíte no GitHub Actions por `.github/workflows/ci.yml` em todo PR e push, além dos testes locais. O fluxo e a futura publicação no Render estão em `docs/CI-CD.md`. CI deve passar antes de propor merge; proteção técnica da main e CD no Render ainda dependem de configuração na etapa correspondente.
 
 ### Versionamento
 
