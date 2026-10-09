@@ -12,7 +12,7 @@ Revisão de infraestrutura em 07/10/2026: suíte ampliada para 16 testes, inclui
 
 ## Iniciar no Windows
 
-Os usuários utilizam UUID v4 como chave primária. A migração `users.0002_user_uuid` exige tabela de usuários vazia (situação verificada no projeto antes da troca) e preserva a migração inicial. Se houver contas em outro ambiente, ela para sem apagar dados; não remova contas/volume para forçar a execução. Novos modelos próprios seguirão UUID; tabelas internas do Django mantêm seus IDs nativos.
+Os usuários utilizam UUID v4 como chave primária. A migração `users.0002_user_uuid` exige tabelas de usuários e sessões vazias (situação verificada no projeto antes da troca) e preserva a migração inicial. Se houver contas em outro ambiente, ela para sem apagar dados; não remova contas/volume para forçar a execução. Novos modelos próprios seguirão UUID; tabelas internas do Django mantêm seus IDs nativos.
 
 Instale e inicie o Docker Desktop com containers Linux. Não é necessário instalar Python ou PostgreSQL no computador.
 

@@ -11,12 +11,19 @@ def require_empty_users(apps, schema_editor):
             "A troca de ID para UUID exige a tabela de usuarios vazia. "
             "Nenhum dado foi apagado. Prepare uma migracao de dados antes de continuar."
         )
+    Session = apps.get_model("sessions", "Session")
+    if Session.objects.using(schema_editor.connection.alias).exists():
+        raise RuntimeError(
+            "A troca de ID exige a tabela de sessoes vazia. "
+            "Nenhum dado foi apagado. Invalide as sessoes antigas antes de continuar."
+        )
 
 
 class Migration(migrations.Migration):
     dependencies = [
         ("users", "0001_initial"),
         ("admin", "0003_logentry_add_action_flag_choices"),
+        ("sessions", "0001_initial"),
     ]
 
     operations = [

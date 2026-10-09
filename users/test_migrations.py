@@ -1,10 +1,11 @@
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
 from django.test import TransactionTestCase
+from django.utils import timezone
 
 
 class UserUUIDMigrationTests(TransactionTestCase):
-    old_target = [("users", "0001_initial"), ("admin", "0003_logentry_add_action_flag_choices")]
+    old_target = [("users", "0001_initial"), ("admin", "0003_logentry_add_action_flag_choices"), ("sessions", "0001_initial")]
     new_target = [("users", "0002_user_uuid")]
 
     def setUp(self):
@@ -15,6 +16,7 @@ class UserUUIDMigrationTests(TransactionTestCase):
 
     def restore_schema(self):
         # Remove apenas a fixture no banco de teste antes de restaurar o schema.
+        self.old_apps.get_model("sessions", "Session").objects.all().delete()
         self.old_apps.get_model("users", "User").objects.all().delete()
         MigrationExecutor(connection).migrate(self.new_target)
 
@@ -39,3 +41,10 @@ class UserUUIDMigrationTests(TransactionTestCase):
         with self.assertRaisesRegex(RuntimeError, "Nenhum dado foi apagado"):
             MigrationExecutor(connection).migrate(self.new_target)
         self.assertTrue(User.objects.filter(pk=user.pk, username=user.username).exists())
+
+    def test_remaining_session_blocks_conversion_without_deleting_it(self):
+        Session = self.old_apps.get_model("sessions", "Session")
+        Session.objects.create(session_key="legacy-session", session_data="legacy", expire_date=timezone.now())
+        with self.assertRaisesRegex(RuntimeError, "tabela de sessoes vazia"):
+            MigrationExecutor(connection).migrate(self.new_target)
+        self.assertTrue(Session.objects.filter(pk="legacy-session").exists())

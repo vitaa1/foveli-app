@@ -1,4 +1,9 @@
+import uuid
+
+from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -62,8 +67,3 @@ class UserFoundationTests(TestCase):
         client = Client(enforce_csrf_checks=True)
         response = client.post(reverse("admin:login"), {"username": "dono", "password": "test-password"})
         self.assertEqual(response.status_code, 403)
-import uuid
-
-from django.contrib.admin.models import ADDITION, LogEntry
-from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType

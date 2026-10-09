@@ -57,7 +57,7 @@ Essas decisões ampliam o escopo inicial com preço histórico, devoluções par
 
 Decisão de identificadores: modelos próprios da Foveli terão `id` UUID v4 gerado pelo servidor e não editável, começando por User. Produtos, vendas, movimentações e demais modelos adotarão a mesma regra quando forem implementados; relações usam ForeignKey para preservar integridade. Tabelas internas do Django (permissões, grupos, sessões e log administrativo) mantêm seus IDs nativos, com referências ao usuário em UUID. Não criar uma classe base apenas para um campo neste momento. UUID não concede acesso nem substitui validação de permissões.
 
-A migração inicial já aplicada será preservada. A migração `users.0002_user_uuid` converte o esquema vazio e suas referências, com bloqueio se houver usuários. O banco local foi conferido sem usuários/logs/sessões antes da alteração. Um ambiente que já contenha usuários precisa de migração de dados específica; não apagar banco, volume ou contas para contornar o bloqueio.
+A migração inicial já aplicada será preservada. A migração `users.0002_user_uuid` converte o esquema vazio e suas referências, com bloqueio se houver usuários ou sessões. Sessões antigas devem ser invalidadas de forma explícita antes da conversão; a migração não apaga dados. O banco local foi conferido sem usuários/logs/sessões antes da alteração. Um ambiente que já contenha usuários precisa de migração de dados específica; não apagar banco, volume ou contas para contornar o bloqueio.
 
 Usar os usuários e senhas do Django, sem tabela Seller separada: cada vendedor é um User com telefone e perfil vendedor. O administrador possui perfil administrador. Ativo/inativo usa o estado do usuário.
 
