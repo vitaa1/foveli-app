@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ['**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend e infraestrutura
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6 (Node.js 24)
+        with:
+          persist-credentials: false
+
+      - name: Preparar ambiente exclusivo de testes
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
+
+      - name: Verificar exclusao de segredos no contexto Docker
+        shell: pwsh
+        run: ./scripts/Test-DockerContext.ps1
+
+      - name: Construir imagem
+        run: docker compose build --pull
+
+      - name: Conferir dependencias instaladas
+        run: docker compose run --rm web pip check
+
+      - name: Verificar configuracao Django
+        run: docker compose run --rm web python manage.py check
+
+      - name: Detectar migracoes faltantes
+        run: docker compose run --rm web python manage.py makemigrations --check --dry-run
+
+      - name: Aplicar migracoes em banco vazio
+        run: docker compose run --rm web python manage.py migrate --noinput
+
+      - name: Executar toda a suite automatizada
+        run: docker compose run --rm web python manage.py test --noinput
+
+      - name: Verificar configuracao de producao
+        run: |
+          CHECK_SECRET=$(python3 -c 'import secrets; print(secrets.token_urlsafe(64))')
+          docker compose run --rm -e DJANGO_DEBUG=false -e DJANGO_SECRET_KEY="$CHECK_SECRET" web python manage.py check --deploy --fail-level WARNING
+
+      - name: Verificar aplicacao com PostgreSQL
+        run: |
+          docker compose up -d web
+          # A porta pode abrir antes do Django estar pronto (connection reset).
+          curl --fail --retry 10 --retry-delay 1 --retry-all-errors --retry-max-time 30 --connect-timeout 2 --max-time 5 http://127.0.0.1:8000/health/
+
+      - name: Exibir diagnostico em caso de falha
+        if: failure()
+        run: docker compose logs --no-color --tail=100
+
+      - name: Remover ambiente descartavel do runner
+        if: always()
+        run: docker compose down --volumes --remove-orphans
