@@ -1,6 +1,6 @@
 # Publicação no Render
 
-Estado: preparação documental. Nenhum serviço ou banco foi criado; CD ainda não está ativo. O proprietário ainda precisa criar a conta. A main não recebeu os incrementos e não deve ser integrada sem sua autorização.
+Estado em 09/10/2026: conta criada, banco Free solicitado e Web Service Docker criado em Virginia. Os PRs #1 a #3 foram integrados na main pelo proprietário. As primeiras tentativas de publicação falharam na inicialização (status 127); publicação e CD ainda não foram validados. A correção do comando segue em PR separado, sem autorização de merge automático.
 
 ## Configuração escolhida
 
