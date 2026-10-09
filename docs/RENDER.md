@@ -37,6 +37,14 @@ Não copiar credenciais locais de `.env.example` nem colocar segredos em PRs ou 
 - Após um merge autorizado, comparar SHA da main, execução CI e versão publicada. Render deve esperar a aprovação do CI do commit integrado. Não testar uma falha artificial na main de produção.
 - Conferir retenção de backup e realizar restauração em banco separado antes de dados reais. Não presumir que voltar uma imagem reverte migrações: alterações devem ser compatíveis com a versão anterior; restauração exige decisão explícita.
 
+## Ambiente temporário Free
+
+O proprietário escolheu Free para os testes iniciais. O banco gratuito expira após 30 dias; acompanhar a data no painel e migrar o plano antes de manter dados reais. O roteiro pago acima continua sendo a referência de produção.
+
+No Web Service Free, deixar Pre-Deploy vazio e configurar Docker Command como `python scripts/start_render.py`. O script executa migrações e só inicia Gunicorn se elas passarem, respeitando PORT e substituindo o processo para receber sinais de parada. Usar uma única instância neste ambiente; ao evoluir para serviço pago, voltar ao Pre-Deploy e remover esse override. Não executar migrações no build.
+
+As tentativas de 09/10/2026 com comandos compostos entre aspas falharam com status 127: a sequência inteira foi interpretada como um executável. O script evita depender dessa interpretação do painel. Ele precisa estar integrado na main antes de configurar o novo comando. Manter Auto-Deploy em After CI Checks Pass e /health/ como health check. Preencher os hosts exatos assim que o endereço do serviço estiver disponível.
+
 ## Limite da migração UUID
 
 O primeiro banco de produção deve ser novo. `users.0002_user_uuid` interrompe se encontrar usuários ou sessões anteriores. Não apagar contas ou volumes para forçar a migração; um ambiente populado exige plano próprio de migração de dados. Criar o administrador somente depois das migrações.
