@@ -1,6 +1,6 @@
 # Publicação no Render
 
-Estado: preparação documental. Nenhum serviço ou banco foi criado; CD ainda não está ativo. O proprietário ainda precisa criar a conta. A main não recebeu os incrementos e não deve ser integrada sem sua autorização.
+Estado em 09/10/2026: conta criada, banco Free solicitado e Web Service Docker criado em Virginia. Os PRs #1 a #3 foram integrados na main pelo proprietário. As primeiras tentativas de publicação falharam na inicialização (status 127); publicação e CD ainda não foram validados. A correção do comando segue em PR separado, sem autorização de merge automático.
 
 ## Configuração escolhida
 
@@ -36,6 +36,14 @@ Não copiar credenciais locais de `.env.example` nem colocar segredos em PRs ou 
 - Configurar proteção da main exigindo PR e o check **Backend e infraestrutura**. Verificar a regra no GitHub; o workflow sozinho não impede merge.
 - Após um merge autorizado, comparar SHA da main, execução CI e versão publicada. Render deve esperar a aprovação do CI do commit integrado. Não testar uma falha artificial na main de produção.
 - Conferir retenção de backup e realizar restauração em banco separado antes de dados reais. Não presumir que voltar uma imagem reverte migrações: alterações devem ser compatíveis com a versão anterior; restauração exige decisão explícita.
+
+## Ambiente temporário Free
+
+O proprietário escolheu Free para os testes iniciais. O banco gratuito expira após 30 dias; acompanhar a data no painel e migrar o plano antes de manter dados reais. O roteiro pago acima continua sendo a referência de produção.
+
+No Web Service Free, deixar Pre-Deploy vazio e configurar Docker Command como `python scripts/start_render.py`. O script executa migrações e só inicia Gunicorn se elas passarem, respeitando PORT e substituindo o processo para receber sinais de parada. Usar uma única instância neste ambiente; ao evoluir para serviço pago, voltar ao Pre-Deploy e remover esse override. Não executar migrações no build.
+
+As tentativas de 09/10/2026 com comandos compostos entre aspas falharam com status 127: a sequência inteira foi interpretada como um executável. O script evita depender dessa interpretação do painel. Ele precisa estar integrado na main antes de configurar o novo comando. Manter Auto-Deploy em After CI Checks Pass e /health/ como health check. Preencher os hosts exatos assim que o endereço do serviço estiver disponível.
 
 ## Limite da migração UUID
 
