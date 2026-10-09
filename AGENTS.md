@@ -1,6 +1,7 @@
 # Regras de desenvolvimento da Foveli
 
 - Consultar `docs/MVP.md` para regras aprovadas e `CONTEXT.md` para vocabulário. Não implementar todo o escopo de uma vez; entregar incrementos pequenos.
+- Modelos proprios da Foveli usam UUID v4 como chave primaria: `UUIDField(primary_key=True, default=uuid.uuid4, editable=False)`. Manter IDs nativos das tabelas internas do Django. UUID nao substitui autorizacao nem isolamento de dados.
 - Nunca desenvolver nem fazer commits diretamente na `main`. Usar branch própria por funcionalidade, correção, infraestrutura ou documentação. Não integrar na `main` sem solicitação do proprietário.
 - Sempre acompanhar novas funcionalidades e mudanças de comportamento com testes automatizados. Correções exigem teste de regressão que reproduza o defeito.
 - Usar Django test runner no Docker com PostgreSQL de testes. Cobrir regras, permissões, dados de outros usuários, validações, dinheiro e estoque; validar transações/concorrência no banco real quando pertinente.
